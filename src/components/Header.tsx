@@ -2,7 +2,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Utensils, Heart } from "lucide-react";
-import ApiKeyModal from "./ApiKeyModal";
 
 export const Header = () => {
   const location = useLocation();
@@ -27,7 +26,7 @@ export const Header = () => {
               Favorites
             </Button>
           </Link>
-          <ApiKeyModal />
+          {/* API Key button removed */}
         </nav>
       </div>
     </header>

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useApiKey } from "@/contexts/ApiKeyContext";
 import Header from "@/components/Header";
@@ -24,8 +23,10 @@ const Index = () => {
     queryFn: () => searchRecipes(apiKey!, searchParams),
     enabled: !!apiKey && !!searchParams,
     staleTime: 1000 * 60 * 5, // 5 minutes
-    onError: (err: Error) => {
-      toast.error(err.message);
+    onSettled: (_data, error) => {
+      if (error) {
+        toast.error(error.message);
+      }
     },
   });
 
