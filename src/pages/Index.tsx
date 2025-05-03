@@ -23,11 +23,9 @@ const Index = () => {
     queryFn: () => searchRecipes(apiKey!, searchParams),
     enabled: !!apiKey && !!searchParams,
     staleTime: 1000 * 60 * 5, // 5 minutes
-    onSettled: (_data, error) => {
-      if (error) {
-        toast.error(error.message);
-      }
-    },
+    onError: (error) => {
+      toast.error(error.message);
+    }
   });
 
   const handleSearch = (params: any) => {
