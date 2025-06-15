@@ -1,6 +1,9 @@
 
 import { Recipe } from "@/contexts/FavoritesContext";
 
+// Replace this with your actual Spoonacular API key
+const API_KEY = 'YOUR_SPOONACULAR_API_KEY_HERE';
+
 const BASE_URL = 'https://api.spoonacular.com';
 
 interface SearchParams {
@@ -16,13 +19,13 @@ interface SearchParams {
   number?: number;
 }
 
-export const searchRecipes = async (apiKey: string, params: SearchParams) => {
-  if (!apiKey) {
-    throw new Error('API key is required');
+export const searchRecipes = async (params: SearchParams) => {
+  if (!API_KEY || API_KEY === 'YOUR_SPOONACULAR_API_KEY_HERE') {
+    throw new Error('Please add your Spoonacular API key to src/services/recipeService.ts');
   }
 
   const searchParams = new URLSearchParams();
-  searchParams.append('apiKey', apiKey);
+  searchParams.append('apiKey', API_KEY);
   
   // Add all non-empty parameters
   Object.entries(params).forEach(([key, value]) => {
@@ -47,14 +50,14 @@ export const searchRecipes = async (apiKey: string, params: SearchParams) => {
   }
 };
 
-export const getRecipeById = async (apiKey: string, id: number): Promise<Recipe> => {
-  if (!apiKey) {
-    throw new Error('API key is required');
+export const getRecipeById = async (id: number): Promise<Recipe> => {
+  if (!API_KEY || API_KEY === 'YOUR_SPOONACULAR_API_KEY_HERE') {
+    throw new Error('Please add your Spoonacular API key to src/services/recipeService.ts');
   }
 
   try {
     const response = await fetch(
-      `${BASE_URL}/recipes/${id}/information?apiKey=${apiKey}`
+      `${BASE_URL}/recipes/${id}/information?apiKey=${API_KEY}`
     );
     
     if (!response.ok) {

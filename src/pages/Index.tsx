@@ -1,5 +1,5 @@
+
 import { useState } from "react";
-import { useApiKey } from "@/contexts/ApiKeyContext";
 import Header from "@/components/Header";
 import SearchFilters from "@/components/SearchFilters";
 import RecipeCard from "@/components/RecipeCard";
@@ -9,19 +9,14 @@ import { Recipe } from "@/contexts/FavoritesContext";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Utensils } from "lucide-react";
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import ApiKeyModal from "@/components/ApiKeyModal";
 
 const Index = () => {
-  const { apiKey } = useApiKey();
   const [searchParams, setSearchParams] = useState<any>(null);
-  const [showApiKeyDialog, setShowApiKeyDialog] = useState(false);
 
   const { data, isLoading, error, isError } = useQuery({
     queryKey: ['recipes', searchParams],
-    queryFn: () => searchRecipes(apiKey!, searchParams),
-    enabled: !!apiKey && !!searchParams,
+    queryFn: () => searchRecipes(searchParams),
+    enabled: !!searchParams,
     staleTime: 1000 * 60 * 5, // 5 minutes
     onError: (error) => {
       toast.error(error.message);
@@ -29,10 +24,6 @@ const Index = () => {
   });
 
   const handleSearch = (params: any) => {
-    if (!apiKey) {
-      setShowApiKeyDialog(true);
-      return;
-    }
     setSearchParams(params);
   };
 
@@ -97,21 +88,6 @@ const Index = () => {
           )}
         </div>
       </main>
-      
-      <Dialog open={showApiKeyDialog} onOpenChange={setShowApiKeyDialog}>
-        <DialogContent>
-          <DialogTitle>API Key Required</DialogTitle>
-          <DialogDescription className="py-4">
-            You need to set your Spoonacular API key before searching for recipes.
-          </DialogDescription>
-          <div className="flex justify-end gap-2">
-            <Button variant="outline" onClick={() => setShowApiKeyDialog(false)}>
-              Cancel
-            </Button>
-            <ApiKeyModal />
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
